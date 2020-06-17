@@ -1,4 +1,4 @@
-import 'package:clima/screens/location.dart';
+import 'package:clima/screens/loading.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData.dark(),
       home: Scaffold(
-        body: Location(),
+        body: Loading(),
       ),
     );
   }
