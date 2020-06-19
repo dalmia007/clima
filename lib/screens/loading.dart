@@ -1,6 +1,8 @@
+
+
+import 'package:clima/services/API.dart';
 import 'package:clima/services/location.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 String apiKey = DotEnv().env['API_KEY'];
@@ -17,21 +19,21 @@ class _LoadingState extends State<Loading> {
   @override
   void initState() {
     super.initState();
-    getLocation();
+    getLocationData();
   }
 
-  void getLocation() async {
-    Location location = Location();
+  void getLocationData() async {
+     Location location = Location();
     await location.getCurrentLocation();
     latitude = location.latitude;
     longitude = location.longitude;
-    getData();
-  }
 
-  void getData() async {
-    Response response = await get(
-        'http://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
-    print(response.body);
+    NetworkHelper networkHelper = NetworkHelper('http://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey')
+
+    var weatherData = await networkHelper.getData();
+   
+
+
   }
 
   @override
