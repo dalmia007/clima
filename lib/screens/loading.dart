@@ -28,13 +28,17 @@ class _LoadingState extends State<Loading> {
     latitude = location.latitude;
     longitude = location.longitude;
 
-    NetworkHelper networkHelper = NetworkHelper(
+    NetworkHelper networkHelper1 = NetworkHelper(
         'http://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
 
-    var weatherData = await networkHelper.getData();
+    NetworkHelper networkHelper2 = NetworkHelper(
+        'http://api.openweathermap.org/data/2.5/onecall?lat=$latitude&lon=$longitude&exclude=minutely&appid=$apiKey');
+
+    var cityData = await networkHelper1.getData();
+    var weatherData = await networkHelper2.getData();
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return Home(weatherData);
+      return Home(weatherData, cityData);
     }));
   }
 
