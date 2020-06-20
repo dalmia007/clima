@@ -28,8 +28,9 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Center(
-          child: Row(
+          child: Column(
         children: <Widget>[
           Text(temperature.toString()),
           Text(cityName.toString()),

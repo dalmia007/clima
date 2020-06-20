@@ -1,5 +1,5 @@
 import 'package:clima/screens/home.dart';
-import 'package:clima/services/API.dart';
+import 'package:clima/services/networking.dart';
 import 'package:clima/services/location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -37,7 +37,7 @@ class _LoadingState extends State<Loading> {
     var cityData = await networkHelper1.getData();
     var weatherData = await networkHelper2.getData();
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
       return Home(weatherData, cityData);
     }));
   }
