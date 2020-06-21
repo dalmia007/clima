@@ -10,8 +10,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   double temperature;
-  int condition;
+  int conditionId;
+  String condition;
+  String conditionDescription;
   String cityName;
+  String countryName;
 
   @override
   void initState() {
@@ -21,8 +24,11 @@ class _HomeState extends State<Home> {
 
   void updateData(dynamic weatherData, dynamic cityData) {
     temperature = weatherData['current']['temp'] - 273.15;
-    // condition = weatherData['weather'][0]['id'];
+    conditionId = weatherData['current']['weather'][0]['id'];
+    condition = weatherData['current']['weather'][0]['main'];
+    conditionDescription = weatherData['current']['weather'][0]['description'];
     cityName = cityData['name'];
+    countryName = cityData['sys']['country'];
   }
 
   @override
@@ -32,8 +38,11 @@ class _HomeState extends State<Home> {
       body: Center(
           child: Column(
         children: <Widget>[
-          Text(temperature.toString()),
-          Text(cityName.toString()),
+          Text('$cityName,' + '$countryName'),
+          Text('${temperature.toInt()}°' + 'C'),
+          Text(condition.toString()),
+          Text(conditionDescription.toString()),
+          Text(conditionId.toString()),
         ],
       )),
     );
