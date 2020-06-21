@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
   final weatherData;
-  final cityData;
-  Home(this.weatherData, this.cityData);
+  final currentData;
+  Home(this.weatherData, this.currentData);
   @override
   _HomeState createState() => _HomeState();
 }
@@ -15,20 +15,30 @@ class _HomeState extends State<Home> {
   String conditionDescription;
   String cityName;
   String countryName;
+  int humidity;
+  double windSpeed;
+  double feelsLike;
+  double maxTemp;
+  double minTemp;
 
   @override
   void initState() {
     super.initState();
-    updateData(widget.weatherData, widget.cityData);
+    updateData(widget.weatherData, widget.currentData);
   }
 
-  void updateData(dynamic weatherData, dynamic cityData) {
+  void updateData(dynamic weatherData, dynamic currentData) {
     temperature = weatherData['current']['temp'] - 273.15;
     conditionId = weatherData['current']['weather'][0]['id'];
     condition = weatherData['current']['weather'][0]['main'];
     conditionDescription = weatherData['current']['weather'][0]['description'];
-    cityName = cityData['name'];
-    countryName = cityData['sys']['country'];
+    cityName = currentData['name'];
+    countryName = currentData['sys']['country'];
+    humidity = currentData['main']['humidity'];
+    windSpeed = currentData['wind']['speed'] * 3.6;
+    feelsLike = weatherData['current']['weather'][0]['feels_like'];
+    maxTemp = currentData['main']['temp_max'] - 273.15;
+    minTemp = currentData['main']['temp_min'] - 273.15;
   }
 
   @override
@@ -43,6 +53,10 @@ class _HomeState extends State<Home> {
           Text(condition.toString()),
           Text(conditionDescription.toString()),
           Text(conditionId.toString()),
+          Text(windSpeed.toInt().toString() + ' km/h'),
+          Text(humidity.toString() + ' %'),
+          Text('${maxTemp.toInt()}°' + 'C'),
+          Text('${minTemp.toInt()}°' + 'C'),
         ],
       )),
     );

@@ -34,11 +34,11 @@ class _LoadingState extends State<Loading> {
     NetworkHelper networkHelper2 = NetworkHelper(
         'http://api.openweathermap.org/data/2.5/onecall?lat=$latitude&lon=$longitude&exclude=minutely&appid=$apiKey');
 
-    var cityData = await networkHelper1.getData();
+    var currentData = await networkHelper1.getData();
     var weatherData = await networkHelper2.getData();
 
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-      return Home(weatherData, cityData);
+      return Home(weatherData, currentData);
     }));
   }
 
