@@ -1,14 +1,16 @@
+import 'package:clima/services/weather.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
-  final weatherData;
+  final futureData;
   final currentData;
-  Home(this.weatherData, this.currentData);
+  Home(this.futureData, this.currentData);
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  WeatherModel weatherModel = WeatherModel();
   double temperature;
   int conditionId;
   String condition;
@@ -25,22 +27,24 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    updateData(widget.weatherData, widget.currentData);
+    updateData(widget.futureData, widget.currentData);
   }
 
-  void updateData(dynamic weatherData, dynamic currentData) {
-    temperature = weatherData['current']['temp'] - 273.15;
-    conditionId = weatherData['current']['weather'][0]['id'];
-    condition = weatherData['current']['weather'][0]['main'];
-    conditionDescription = weatherData['current']['weather'][0]['description'];
-    cityName = currentData['name'];
-    countryName = currentData['sys']['country'];
-    humidity = currentData['main']['humidity'];
-    windSpeed = currentData['wind']['speed'] * 3.6;
-    feelsLike = weatherData['current']['weather'][0]['feels_like'];
-    maxTemp = currentData['main']['temp_max'] - 273.15;
-    minTemp = currentData['main']['temp_min'] - 273.15;
-    iconID = currentData['weather'][0]['icon'];
+  void updateData(dynamic futureData, dynamic currentData) {
+    setState(() {
+      temperature = futureData['current']['temp'] - 273.15;
+      conditionId = futureData['current']['weather'][0]['id'];
+      condition = futureData['current']['weather'][0]['main'];
+      conditionDescription = futureData['current']['weather'][0]['description'];
+      cityName = currentData['name'];
+      countryName = currentData['sys']['country'];
+      humidity = currentData['main']['humidity'];
+      windSpeed = currentData['wind']['speed'] * 3.6;
+      feelsLike = futureData['current']['weather'][0]['feels_like'];
+      maxTemp = currentData['main']['temp_max'] - 273.15;
+      minTemp = currentData['main']['temp_min'] - 273.15;
+      iconID = currentData['weather'][0]['icon'];
+    });
   }
 
   @override
@@ -63,6 +67,13 @@ class _HomeState extends State<Home> {
             'http://openweathermap.org/img/wn/$iconID@2x.png',
             scale: .9,
           ),
+          FlatButton(
+              child: Icon(Icons.access_time),
+              onPressed: () async {
+                var futureData = await weatherModel.getFutureWeather();
+                var currentData = await weatherModel.getCurrentWeather();
+                updateData(futureData, currentData);
+              })
         ],
       )),
     );
