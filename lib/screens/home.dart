@@ -20,6 +20,7 @@ class _HomeState extends State<Home> {
   double feelsLike;
   double maxTemp;
   double minTemp;
+  String iconID;
 
   @override
   void initState() {
@@ -39,6 +40,7 @@ class _HomeState extends State<Home> {
     feelsLike = weatherData['current']['weather'][0]['feels_like'];
     maxTemp = currentData['main']['temp_max'] - 273.15;
     minTemp = currentData['main']['temp_min'] - 273.15;
+    iconID = currentData['weather'][0]['icon'];
   }
 
   @override
@@ -57,6 +59,10 @@ class _HomeState extends State<Home> {
           Text(humidity.toString() + ' %'),
           Text('${maxTemp.toInt()}°' + 'C'),
           Text('${minTemp.toInt()}°' + 'C'),
+          Image.network(
+            'http://openweathermap.org/img/wn/$iconID@2x.png',
+            scale: .9,
+          ),
         ],
       )),
     );
