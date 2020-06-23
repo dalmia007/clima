@@ -32,6 +32,9 @@ class _HomeState extends State<Home> {
 
   void updateData(dynamic futureData, dynamic currentData) {
     setState(() {
+      if (currentData == null || futureData == null) {
+        return;
+      }
       temperature = futureData['current']['temp'] - 273.15;
       conditionId = futureData['current']['weather'][0]['id'];
       condition = futureData['current']['weather'][0]['main'];
@@ -49,33 +52,40 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-          child: Column(
-        children: <Widget>[
-          Text('$cityName,' + '$countryName'),
-          Text('${temperature.toInt()}°' + 'C'),
-          Text(condition.toString()),
-          Text(conditionDescription.toString()),
-          Text(conditionId.toString()),
-          Text(windSpeed.toInt().toString() + ' km/h'),
-          Text(humidity.toString() + ' %'),
-          Text('${maxTemp.toInt()}°' + 'C'),
-          Text('${minTemp.toInt()}°' + 'C'),
-          Image.network(
-            'http://openweathermap.org/img/wn/$iconID@2x.png',
-            scale: .9,
-          ),
-          FlatButton(
-              child: Icon(Icons.access_time),
-              onPressed: () async {
-                var futureData = await weatherModel.getFutureWeather();
-                var currentData = await weatherModel.getCurrentWeather();
-                updateData(futureData, currentData);
-              })
-        ],
-      )),
-    );
+    if (widget.currentData == null || widget.futureData == null) {
+      return Scaffold(
+        body: Center(
+          child: Text('Check location permission and internet connection'),
+        ),
+      );
+    } else
+      return Scaffold(
+        appBar: AppBar(),
+        body: Center(
+            child: Column(
+          children: <Widget>[
+            Text('$cityName,' + '$countryName'),
+            Text('${temperature.toInt()}°' + 'C'),
+            Text(condition.toString()),
+            Text(conditionDescription.toString()),
+            Text(conditionId.toString()),
+            Text(windSpeed.toInt().toString() + ' km/h'),
+            Text(humidity.toString() + ' %'),
+            Text('${maxTemp.toInt()}°' + 'C'),
+            Text('${minTemp.toInt()}°' + 'C'),
+            Image.network(
+              'http://openweathermap.org/img/wn/$iconID@2x.png',
+              scale: .9,
+            ),
+            FlatButton(
+                child: Icon(Icons.my_location),
+                onPressed: () async {
+                  var futureData = await weatherModel.getFutureWeather();
+                  var currentData = await weatherModel.getCurrentWeather();
+                  updateData(futureData, currentData);
+                })
+          ],
+        )),
+      );
   }
 }
