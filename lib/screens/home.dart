@@ -24,11 +24,13 @@ class _HomeState extends State<Home> {
   double minTemp;
   String iconID;
   String inputCity;
+  TextEditingController inputController;
 
   @override
   void initState() {
     super.initState();
     updateData(widget.futureData, widget.currentData);
+    inputController = TextEditingController();
   }
 
   void updateData(dynamic futureData, dynamic currentData) {
@@ -87,9 +89,12 @@ class _HomeState extends State<Home> {
                 },
               ),
               TextField(
+                controller: inputController,
                 onChanged: (value) {
                   inputCity = value;
                 },
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(hintText: 'Enter City Name'),
               ),
               FlatButton(
                 child: Text('Get Weather'),
@@ -98,6 +103,7 @@ class _HomeState extends State<Home> {
                       await weatherModel.getCityCurrentWeather(inputCity);
                   var futureData = await weatherModel.getCityFutureWeather();
                   updateData(futureData, currentData);
+                  inputController.clear();
                 },
               )
             ],
